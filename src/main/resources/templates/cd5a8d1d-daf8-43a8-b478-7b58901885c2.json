@@ -1,7 +1,7 @@
 {
   "chat_id" : "${chatId}",
   "text" : "Добро пожаловать",
-  "parse_mode" : "Markdown",
+  "parse_mode" : "markdown",
   "reply_markup" : {
     "resize_keyboard" : "true",
     "keyboard" : [

@@ -1,5 +1,6 @@
 ### InteliJ IDEA
 .idea/
+*.iml
 
 ### Build
 build/

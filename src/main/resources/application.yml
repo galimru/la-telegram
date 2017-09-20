@@ -7,7 +7,6 @@ spring.rabbitmq:
   host: localhost
   username: rabbit
   password: rabbit
-  vhost: /
 
 #spring.jpa.hibernate.ddl-auto: create
 

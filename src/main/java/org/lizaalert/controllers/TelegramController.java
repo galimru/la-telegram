@@ -8,12 +8,10 @@ import org.lizaalert.providers.UserProvider;
 import org.lizaalert.repositories.StateRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
-@Controller("/api")
+@Controller
+@RequestMapping("/api")
 public class TelegramController {
 
     @Autowired private StateRepository stateRepository;

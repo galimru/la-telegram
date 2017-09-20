@@ -15,7 +15,7 @@ import java.net.URISyntaxException;
 @EnableConfigurationProperties(DataSourceProperties.class)
 public class DataSourceConfiguration {
 
-    private static final String PROTOCOL = "postgresql";
+    private static final String PROTOCOL = "jdbc:postgresql";
 
     @Bean
     public DataSource getDataSource(DataSourceProperties properties) throws URISyntaxException {

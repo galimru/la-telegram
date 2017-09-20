@@ -34,7 +34,7 @@ public class AMQPConfiguration {
             host = uri.getHost();
             username = uri.getUserInfo().split(":")[0];
             password = uri.getUserInfo().split(":")[1];
-            vhost = uri.getPath();
+            vhost = uri.getPath().substring(1);
         }
         CachingConnectionFactory connectionFactory = new CachingConnectionFactory();
         connectionFactory.setHost(host);

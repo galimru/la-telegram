@@ -4,10 +4,10 @@ spring.datasource:
   password: lauser!
 
 spring.rabbitmq:
-  port: 5672
   host: localhost
   username: rabbit
   password: rabbit
+  vhost: /
 
 #spring.jpa.hibernate.ddl-auto: create
 

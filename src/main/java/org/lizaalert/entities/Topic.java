@@ -30,7 +30,7 @@ public class Topic extends AbstractEntity implements Serializable {
     @Column(name = "IMAGE_URL", length = IMAGE_URL_LENGTH)
     private String imageUrl;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "FORUM_ID")
     private Forum forum;
 

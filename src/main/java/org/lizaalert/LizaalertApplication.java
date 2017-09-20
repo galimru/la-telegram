@@ -18,6 +18,11 @@ public class LizaalertApplication extends SpringBootServletInitializer {
     }
 
     @Bean
+    public Queue getTelegramMessageQueue() {
+        return new Queue(QueueService.TELEGRAM_MESSAGE_QUEUE);
+    }
+
+    @Bean
     public Queue getTelegramNotificationQueue() {
         return new Queue(QueueService.TELEGRAM_NOTIFICATION_QUEUE);
     }

@@ -1,4 +1,4 @@
-package org.lizaalert.context;
+package org.lizaalert.providers;
 
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
@@ -6,18 +6,18 @@ import org.springframework.context.ApplicationContextAware;
 
 public class ContextProvider implements ApplicationContextAware {
 
-    private static ApplicationContext instance;
+    private static ApplicationContext context;
 
     @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        ContextProvider.instance = applicationContext;
+    public void setApplicationContext(ApplicationContext context) throws BeansException {
+        ContextProvider.context = context;
     }
 
     public static <T> T getBean(Class<T> beanClass) {
-        return instance.getBean(beanClass);
+        return context.getBean(beanClass);
     }
 
     public static Object getBean(String beanName) {
-        return instance.getBean(beanName);
+        return context.getBean(beanName);
     }
 }

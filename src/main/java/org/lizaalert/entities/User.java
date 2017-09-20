@@ -26,6 +26,10 @@ public class User extends AbstractEntity implements Serializable {
     @Column(name = "CHAT_ID")
     private String chatId;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "SATE_ID")
+    private State state;
+
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "LA_USER_FORUM_REF",
             joinColumns = @JoinColumn(name = "USER_ID"),
@@ -70,6 +74,14 @@ public class User extends AbstractEntity implements Serializable {
 
     public void setChatId(String chatId) {
         this.chatId = chatId;
+    }
+
+    public State getState() {
+        return state;
+    }
+
+    public void setState(State state) {
+        this.state = state;
     }
 
     public List<Forum> getForums() {

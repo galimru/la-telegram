@@ -26,10 +26,10 @@ import java.util.List;
 @Component
 public class ForumChecker {
 
-    private static final long DELAY = 1 * 60 * 1000;
-    private static final double REQUESTS_PER_SECOND = 2;
-
     private final Log log = LogFactory.getLog(ForumChecker.class);
+
+    private static final long DELAY = 3 * 60 * 1000;
+    private static final double REQUESTS_PER_SECOND = 2;
 
     @Value("${org.lizaalert.viewforum.url}")
     private String viewforumUrl;
@@ -55,7 +55,9 @@ public class ForumChecker {
 
     private void update(Forum forum) {
         StopWatch sw = new StopWatch(getClass().getSimpleName() + "#update");
-        log.debug(String.format("Fetching forum with id %d", forum.getForumId()));
+        if (log.isDebugEnabled()) {
+            log.debug(String.format("Fetching forum with id %d", forum.getForumId()));
+        }
         String url = String.format(viewforumUrl, forum.getForumId());
         sw.start();
         try {
@@ -79,14 +81,14 @@ public class ForumChecker {
                         topic.setAuthor(author);
                         topic.setTitle(title);
                         topic.setActive(ForumUtils.isActive(title));
-                        refine(topic);
+                        reload(topic);
                         topic = topicRepository.save(topic);
-                        queueService.push(topic);
+                        queueService.pushNotification(topic);
                     } else if (!StringUtils.equals(title, topic.getTitle())) {
                         topic.setTitle(title);
                         topic.setActive(ForumUtils.isActive(title));
                         topic = topicRepository.save(topic);
-                        queueService.push(topic);
+                        queueService.pushNotification(topic);
                     }
                 }
             }
@@ -94,13 +96,17 @@ public class ForumChecker {
             log.error(String.format("Error on connecting to url %s", url), e);
         }
         sw.stop();
-        log.debug(sw.shortSummary());
+        if (log.isDebugEnabled()) {
+            log.debug(sw.shortSummary());
+        }
     }
 
-    private void refine(Topic topic) {
+    private void reload(Topic topic) {
         rateLimiter.acquire();
-        StopWatch sw = new StopWatch(getClass().getSimpleName() + "#refine");
-        log.debug(String.format("Fetching topic with id %d", topic.getTopicId()));
+        StopWatch sw = new StopWatch(getClass().getSimpleName() + "#reload");
+        if (log.isDebugEnabled()) {
+            log.debug(String.format("Fetching topic with id %d", topic.getTopicId()));
+        }
         String url = String.format(viewtopicUrl, topic.getTopicId());
         sw.start();
         try {
@@ -119,7 +125,9 @@ public class ForumChecker {
             log.error(String.format("Error on connecting to url %s", url), e);
         }
         sw.stop();
-        log.debug(sw.shortSummary());
+        if (log.isDebugEnabled()) {
+            log.debug(sw.shortSummary());
+        }
     }
 
 }

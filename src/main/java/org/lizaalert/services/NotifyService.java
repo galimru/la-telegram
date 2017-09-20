@@ -1,8 +1,8 @@
 package org.lizaalert.services;
 
+import com.github.galimru.telegram.actions.SendMessage;
 import com.github.galimru.telegram.model.ForceReply;
 import com.github.galimru.telegram.model.ParseMode;
-import com.github.galimru.telegram.model.SendMessageRequest;
 import org.lizaalert.entities.Topic;
 import org.lizaalert.entities.User;
 import org.lizaalert.repositories.UserRepository;
@@ -20,14 +20,13 @@ public class NotifyService {
     public void notify(Topic topic) {
         List<User> users = userRepository.findByForumId(topic.getForum().getForumId());
         for(User user : users) {
-            SendMessageRequest request = new SendMessageRequest();
-            request.setChatId(user.getChatId());
-            request.setParseMode(ParseMode.HTML);
-            request.setText(topic.getMessage());
-            ForceReply reply = new ForceReply();
-            reply.setForceReply(true);
-            request.setReplyMarkup(reply);
-            telegramService.sendMessage(request);
+            SendMessage request = new SendMessage()
+                    .setChatId(user.getChatId())
+                    .setParseMode(ParseMode.HTML)
+                    .setText(topic.getMessage())
+                    .setReplyMarkup(new ForceReply()
+                            .setForceReply(true));
+            telegramService.execute(request);
         }
     }
 }

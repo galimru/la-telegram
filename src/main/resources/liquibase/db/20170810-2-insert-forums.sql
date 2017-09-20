@@ -1,4 +1,4 @@
---changeset galimru:setup
+--changeset galimru:insert-forums
 
 INSERT INTO la_forum (id, created_at, updated_at, forum_id, name, enabled, parent_id)
 VALUES ('19b29a28-495f-4877-80ca-78d51bd6f7d1', now(), null, 179, 'Центральный', true, null);

@@ -1,12 +1,12 @@
 package org.lizaalert.services;
 
-import com.github.galimru.telegram.model.SendMessageRequest;
+import com.github.galimru.telegram.actions.GenericRequest;
+import com.github.galimru.telegram.actions.SendMessage;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 
@@ -25,20 +25,22 @@ public class TelegramService {
 
     @Autowired private RestTemplate restTemplate;
 
-    public void sendMessage(SendMessageRequest request) {
-        log.debug(String.format("Send message to chat, message %s", request));
-        String url = String.format(telegramUrl, telegramToken, SEND_MESSAGE_METHOD);
+    public void execute(GenericRequest request) {
+        if (log.isDebugEnabled()) {
+            log.debug(String.format("Send request to telegram, request %s", request));
+        }
         try {
-            restTemplate.postForLocation(url, request);
-        } catch (HttpStatusCodeException e) {
-            if (e instanceof HttpClientErrorException) {
-                log.debug(e.getResponseBodyAsString());
+            if (request instanceof SendMessage) {
+                sendMessage((SendMessage) request);
             }
-            log.error("Error on sending message", e);
+        } catch (HttpStatusCodeException e) {
+            log.error("Error on sending request to telegram", e);
         }
     }
 
-    public void sendPhoto() {
-
+    private void sendMessage(SendMessage request) throws HttpStatusCodeException {
+        String url = String.format(telegramUrl, telegramToken, SEND_MESSAGE_METHOD);
+        restTemplate.postForLocation(url, request);
     }
+
 }

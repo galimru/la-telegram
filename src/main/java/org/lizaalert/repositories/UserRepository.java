@@ -10,4 +10,6 @@ import java.util.UUID;
 public interface UserRepository extends JpaRepository<User, UUID> {
     @Query("select distinct u from User u join u.forums f where f.forumId = ?1")
     List<User> findByForumId(Integer forumId);
+
+    User findByUserId(Integer userId);
 }

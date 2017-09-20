@@ -1,10 +1,11 @@
-package org.lizaalert.util;
+package org.lizaalert.builders;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.lizaalert.commands.AbstractCommand;
 import org.lizaalert.entities.State;
 import org.lizaalert.entities.User;
+import org.lizaalert.exceptions.CommandNotFoundException;
 
 import java.lang.reflect.InvocationTargetException;
 
@@ -31,13 +32,13 @@ public class CommandBuilder {
         try {
             command = (AbstractCommand) Class.forName(className)
                     .getConstructor(User.class, State.class)
-                    .newInstance(new Object[] {user, state});
+                    .newInstance(new Object[]{user, state});
         } catch (ClassNotFoundException
                 | InstantiationException
                 | NoSuchMethodException
                 | IllegalAccessException
                 | InvocationTargetException e) {
-            log.error(String.format("Exception on building command object from class name %s", className), e);
+            throw new CommandNotFoundException(String.format("Command with class name %s not found", className), e);
         }
         return command;
     }

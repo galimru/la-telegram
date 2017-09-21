@@ -23,7 +23,11 @@ public class TelegramController {
     public void update(@PathVariable String token, @RequestBody Update update) {
         User user = userProvider.getUser(update.getMessage().getFrom());
         State state = stateRepository.findByParentAndCommand(user.getState(), update.getMessage().getText());
-        // TODO if state null use default command
+
+        if (state == null) {
+            // TODO if state null send user message command not found
+            return;
+        }
 
         new CommandBuilder()
                 .setUser(user)

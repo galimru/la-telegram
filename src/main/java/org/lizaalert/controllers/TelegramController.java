@@ -7,6 +7,7 @@ import org.lizaalert.entities.User;
 import org.lizaalert.providers.UserProvider;
 import org.lizaalert.repositories.StateRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,6 +18,7 @@ public class TelegramController {
     @Autowired private StateRepository stateRepository;
     @Autowired private UserProvider userProvider;
 
+    @ResponseStatus(HttpStatus.OK)
     @RequestMapping(path = "/update/{token}", method = RequestMethod.POST)
     public void update(@PathVariable String token, @RequestBody Update update) {
         User user = userProvider.getUser(update.getMessage().getFrom());

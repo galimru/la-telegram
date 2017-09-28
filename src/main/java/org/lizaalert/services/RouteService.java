@@ -6,6 +6,7 @@ import org.apache.commons.logging.LogFactory;
 import org.lizaalert.entities.State;
 import org.lizaalert.entities.User;
 import org.lizaalert.repositories.StateRepository;
+import org.lizaalert.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -14,6 +15,7 @@ public class RouteService {
 
     private final Log log = LogFactory.getLog(RouteService.class);
 
+    @Autowired private UserRepository userRepository;
     @Autowired private StateRepository stateRepository;
 
     public State resolve(User user, Update update) {
@@ -44,6 +46,11 @@ public class RouteService {
                     user.getUserId(), command));
         }
         return null;
+    }
+
+    public void complete(User user, State state) {
+        user.setState(state);
+        userRepository.save(user);
     }
 
 }

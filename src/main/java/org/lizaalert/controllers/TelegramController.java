@@ -36,6 +36,8 @@ public class TelegramController {
                 .setState(state)
                 .build()
                 .execute();
+
+        routeService.complete(user, state);
     }
 
 }

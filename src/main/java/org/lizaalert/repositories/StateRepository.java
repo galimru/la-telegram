@@ -7,4 +7,6 @@ import java.util.UUID;
 
 public interface StateRepository extends JpaRepository<State, UUID> {
     State findByParentAndCommand(State parent, String command);
+    State findByParentAndCommandIsNull(State parent);
+    State findByCommandAndParentIsNull(String command);
 }

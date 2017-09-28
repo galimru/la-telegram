@@ -10,4 +10,5 @@ import java.util.UUID;
 public interface ForumRepository extends JpaRepository<Forum, UUID> {
     @Query("select f from Forum f where f.enabled = true and f.forums is empty")
     List<Forum> findAllEnabled();
+    List<Forum> findBy();
 }

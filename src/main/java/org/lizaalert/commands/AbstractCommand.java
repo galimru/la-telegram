@@ -17,13 +17,15 @@ public abstract class AbstractCommand {
 
     protected User user;
     protected State state;
+    protected String text;
 
     private TemplateService templateService;
     private QueueService queueService;
 
-    public AbstractCommand(User user, State state) {
+    public AbstractCommand(User user, State state, String text) {
         this.user = user;
         this.state = state;
+        this.text = text;
         this.templateService = ContextProvider.getBean(TemplateService.class);
         this.queueService = ContextProvider.getBean(QueueService.class);
     }

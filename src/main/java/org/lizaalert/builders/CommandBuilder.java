@@ -15,6 +15,7 @@ public class CommandBuilder {
 
     private User user;
     private State state;
+    private String text;
 
     public CommandBuilder setUser(User user) {
         this.user = user;
@@ -26,13 +27,18 @@ public class CommandBuilder {
         return this;
     }
 
+    public CommandBuilder setText(String text) {
+        this.text = text;
+        return this;
+    }
+
     public AbstractCommand build() {
         String className = state.getClassName();
         AbstractCommand command = null;
         try {
             command = (AbstractCommand) Class.forName(className)
-                    .getConstructor(User.class, State.class)
-                    .newInstance(new Object[]{user, state});
+                    .getConstructor(User.class, State.class, String.class)
+                    .newInstance(new Object[]{user, state, text});
         } catch (ClassNotFoundException
                 | InstantiationException
                 | NoSuchMethodException

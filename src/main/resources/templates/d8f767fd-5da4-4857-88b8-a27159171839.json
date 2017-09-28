@@ -1,0 +1,15 @@
+{
+  "chat_id" : "${chatId}",
+  "text" : "${text}: Выберите область",
+  "parse_mode" : "markdown",
+  "reply_markup" : {
+    "resize_keyboard" : "true",
+    "keyboard" : [
+      [
+        {
+          "text" : "Главное меню"
+        }
+      ]
+    ]
+  }
+}

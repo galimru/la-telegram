@@ -8,8 +8,8 @@ import java.util.UUID;
 
 public class StartCommand extends AbstractCommand {
 
-    public StartCommand(User user, State state) {
-        super(user, state);
+    public StartCommand(User user, State state, String text) {
+        super(user, state, text);
     }
 
     @Override

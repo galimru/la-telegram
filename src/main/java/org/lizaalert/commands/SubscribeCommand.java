@@ -8,6 +8,8 @@ import org.lizaalert.providers.ContextProvider;
 import org.lizaalert.repositories.ForumRepository;
 import org.lizaalert.repositories.UserRepository;
 
+import java.util.UUID;
+
 public class SubscribeCommand extends AbstractCommand {
 
     public SubscribeCommand(Session session, Update update) {
@@ -16,11 +18,17 @@ public class SubscribeCommand extends AbstractCommand {
 
     @Override
     public boolean execute() {
-        String text = update.getMessage().getText();
         ForumRepository forumRepository = ContextProvider.getBean(ForumRepository.class);
-        Forum forum = forumRepository.findByName(text);
+        Forum forum;
+        if (update.getCallbackQuery() != null) {
+            String forumId = update.getCallbackQuery().getData();
+            forum = forumRepository.findOne(UUID.fromString(forumId));
+        } else {
+            String text = update.getMessage().getText();
+            forum = forumRepository.findByName(text);
+        }
         if (forum == null) {
-            sendResponse("message", "text", String.format("Форум %s не найден", text));
+            sendResponse("message", "text", "Область не найдена");
             return false;
         }
         User user = getSession().getUser();

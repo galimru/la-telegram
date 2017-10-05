@@ -18,11 +18,17 @@ public class GetForumListCommand extends AbstractCommand {
 
     @Override
     public boolean execute() {
-        String text = update.getMessage().getText();
         CategoryRepository categoryRepository = ContextProvider.getBean(CategoryRepository.class);
-        Category category = categoryRepository.findByName(text);
+        Category category;
+        if (update.getCallbackQuery() != null) {
+            String categoryId = update.getCallbackQuery().getData();
+            category = categoryRepository.findOne(UUID.fromString(categoryId));
+        } else {
+            String text = update.getMessage().getText();
+            category = categoryRepository.findByName(text);
+        }
         if (category == null) {
-            sendResponse("message", "text", String.format("Раздел %s не найден", text));
+            sendResponse("message", "text", "Регион не найден");
             return false;
         }
         ForumRepository forumRepository = ContextProvider.getBean(ForumRepository.class);

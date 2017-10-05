@@ -16,8 +16,7 @@ public class SessionParam extends AbstractEntity implements Serializable {
     @Column(name = "KEY")
     private String key;
 
-    @Lob
-    @Column(name = "VALUE")
+    @Column(name = "VALUE", length = 512)
     private String value;
 
     public Session getSession() {

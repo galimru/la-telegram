@@ -2,9 +2,9 @@ package org.lizaalert.commands;
 
 import com.github.galimru.telegram.model.Update;
 import org.lizaalert.entities.Forum;
-import org.lizaalert.entities.Session;
 import org.lizaalert.entities.User;
 import org.lizaalert.providers.ContextProvider;
+import org.lizaalert.providers.SessionManager;
 import org.lizaalert.repositories.ForumRepository;
 import org.lizaalert.repositories.UserRepository;
 
@@ -12,8 +12,8 @@ import java.util.UUID;
 
 public class SubscribeCommand extends AbstractCommand {
 
-    public SubscribeCommand(Session session, Update update) {
-        super(session, update);
+    public SubscribeCommand(SessionManager sessionManager, Update update) {
+        super(sessionManager, update);
     }
 
     @Override
@@ -31,7 +31,8 @@ public class SubscribeCommand extends AbstractCommand {
             sendResponse("message", "text", "Область не найдена");
             return false;
         }
-        User user = getSession().getUser();
+        sessionManager.put("forumId", forum.getId().toString());
+        User user = sessionManager.getSession().getUser();
         UserRepository userRepository = ContextProvider.getBean(UserRepository.class);
         user = userRepository.findById(user.getId());
         user.getForums().add(forum);

@@ -1,8 +1,8 @@
 package org.lizaalert.commands;
 
 import com.github.galimru.telegram.model.Update;
-import org.lizaalert.entities.Session;
 import org.lizaalert.providers.ContextProvider;
+import org.lizaalert.providers.SessionManager;
 import org.lizaalert.services.MessageService;
 
 import java.util.Collections;
@@ -10,23 +10,23 @@ import java.util.Map;
 
 public abstract class AbstractCommand {
 
-    protected Session session;
+    protected SessionManager sessionManager;
     protected Update update;
 
     protected MessageService messageService;
 
-    public AbstractCommand(Session session, Update update) {
-        this.session = session;
+    public AbstractCommand(SessionManager sessionManager, Update update) {
+        this.sessionManager = sessionManager;
         this.update = update;
         this.messageService = ContextProvider.getBean(MessageService.class);
     }
 
-    public Session getSession() {
-        return session;
+    public SessionManager getSessionManager() {
+        return sessionManager;
     }
 
-    public void setSession(Session session) {
-        this.session = session;
+    public void setSessionManager(SessionManager sessionManager) {
+        this.sessionManager = sessionManager;
     }
 
     public Update getUpdate() {
@@ -46,7 +46,7 @@ public abstract class AbstractCommand {
     }
 
     protected void sendResponse(String templateId, Map<String, Object> parameters) {
-        messageService.sendResponse(session, templateId, parameters);
+        messageService.sendResponse(sessionManager.getSession(), templateId, parameters);
     }
 
     public abstract boolean execute();

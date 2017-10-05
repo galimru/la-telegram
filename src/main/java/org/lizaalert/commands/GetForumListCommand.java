@@ -3,17 +3,18 @@ package org.lizaalert.commands;
 import com.github.galimru.telegram.model.Update;
 import org.lizaalert.entities.Category;
 import org.lizaalert.entities.Forum;
-import org.lizaalert.entities.Session;
 import org.lizaalert.providers.ContextProvider;
+import org.lizaalert.providers.SessionManager;
 import org.lizaalert.repositories.CategoryRepository;
 import org.lizaalert.repositories.ForumRepository;
 
-import java.util.*;
+import java.util.List;
+import java.util.UUID;
 
 public class GetForumListCommand extends AbstractCommand {
 
-    public GetForumListCommand(Session session, Update update) {
-        super(session, update);
+    public GetForumListCommand(SessionManager sessionManager, Update update) {
+        super(sessionManager, update);
     }
 
     @Override
@@ -31,6 +32,7 @@ public class GetForumListCommand extends AbstractCommand {
             sendResponse("message", "text", "Регион не найден");
             return false;
         }
+        sessionManager.put("categoryId", category.getId().toString());
         ForumRepository forumRepository = ContextProvider.getBean(ForumRepository.class);
         List<Forum> forums = forumRepository.findByCategory(category);
         sendResponse("message-with-home", "text", "Выбери область которую ты хочешь отслеживать");

@@ -1,21 +1,18 @@
 package org.lizaalert.commands;
 
 import com.github.galimru.telegram.model.Update;
-import org.lizaalert.entities.Session;
-
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.UUID;
+import org.lizaalert.providers.SessionManager;
 
 public class StartCommand extends AbstractCommand {
 
-    public StartCommand(Session session, Update update) {
-        super(session, update);
+    public StartCommand(SessionManager sessionManager, Update update) {
+        super(sessionManager, update);
     }
 
     @Override
     public boolean execute() {
         sendResponse("welcome");
+        sessionManager.clear();
         return true;
     }
 

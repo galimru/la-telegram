@@ -6,6 +6,7 @@ import org.lizaalert.commands.AbstractCommand;
 import org.lizaalert.entities.Session;
 import org.lizaalert.entities.State;
 import org.lizaalert.entities.User;
+import org.lizaalert.providers.SessionManager;
 import org.lizaalert.services.MessageService;
 import org.lizaalert.services.SessionService;
 import org.lizaalert.services.StateService;
@@ -40,8 +41,10 @@ public class TelegramController {
             return;
         }
 
+        SessionManager sessionManager = new SessionManager(session);
+
         AbstractCommand command = new CommandBuilder(state)
-                .setSession(session)
+                .setSessionManager(sessionManager)
                 .setUpdate(update)
                 .build();
 
@@ -50,7 +53,7 @@ public class TelegramController {
                 state = state.getTransitionTo();
             }
             session.setState(state);
-            sessionService.save(session);
+            sessionManager.save();
         }
     }
 

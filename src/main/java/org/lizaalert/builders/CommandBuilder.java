@@ -8,21 +8,22 @@ import org.lizaalert.entities.Session;
 import org.lizaalert.entities.State;
 import org.lizaalert.entities.User;
 import org.lizaalert.exceptions.CommandNotFoundException;
+import org.lizaalert.providers.SessionManager;
 
 import java.lang.reflect.InvocationTargetException;
 
 public class CommandBuilder {
 
     private State state;
-    private Session session;
+    private SessionManager sessionManager;
     private Update update;
 
     public CommandBuilder(State state) {
         this.state = state;
     }
 
-    public CommandBuilder setSession(Session session) {
-        this.session = session;
+    public CommandBuilder setSessionManager(SessionManager sessionManager) {
+        this.sessionManager = sessionManager;
         return this;
     }
 
@@ -36,8 +37,8 @@ public class CommandBuilder {
         AbstractCommand command;
         try {
             command = (AbstractCommand) Class.forName(className)
-                    .getConstructor(Session.class, Update.class)
-                    .newInstance(new Object[]{session, update});
+                    .getConstructor(SessionManager.class, Update.class)
+                    .newInstance(new Object[]{sessionManager, update});
         } catch (ClassNotFoundException
                 | InstantiationException
                 | NoSuchMethodException

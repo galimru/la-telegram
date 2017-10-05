@@ -3,14 +3,15 @@ package org.lizaalert.commands;
 import com.github.galimru.telegram.model.Update;
 import org.lizaalert.entities.*;
 import org.lizaalert.providers.ContextProvider;
+import org.lizaalert.providers.SessionManager;
 import org.lizaalert.repositories.CategoryRepository;
 
 import java.util.*;
 
 public class GetCategoryListCommand extends AbstractCommand {
 
-    public GetCategoryListCommand(Session session, Update update) {
-        super(session, update);
+    public GetCategoryListCommand(SessionManager sessionManager, Update update) {
+        super(sessionManager, update);
     }
 
     @Override

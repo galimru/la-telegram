@@ -98,7 +98,7 @@ CREATE TABLE la_session_param
   created_at timestamp without time zone,
   updated_at timestamp without time zone,
   key character varying(255),
-  value text,
+  value character varying(512),
   session_id uuid,
   CONSTRAINT la_session_param_pkey PRIMARY KEY (id),
   CONSTRAINT fks1b4eyjt8rqtpyr46aouqv4hs FOREIGN KEY (session_id)

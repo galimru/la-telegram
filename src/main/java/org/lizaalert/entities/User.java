@@ -7,7 +7,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "LA_USER", uniqueConstraints =
-@UniqueConstraint(name = "FK_LA_USER_USER_ID", columnNames = {"user_id"}))
+@UniqueConstraint(name = "FK_LA_USER_USER_ID", columnNames = {"USER_ID"}))
 public class User extends AbstractEntity implements Serializable {
     private static final long serialVersionUID = -4253795131140000773L;
 
@@ -22,13 +22,6 @@ public class User extends AbstractEntity implements Serializable {
 
     @Column(name = "LAST_NAME")
     private String lastName;
-
-    @Column(name = "CHAT_ID")
-    private String chatId;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "SATE_ID")
-    private State state;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "LA_USER_FORUM_REF",
@@ -66,22 +59,6 @@ public class User extends AbstractEntity implements Serializable {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
-    }
-
-    public String getChatId() {
-        return chatId;
-    }
-
-    public void setChatId(String chatId) {
-        this.chatId = chatId;
-    }
-
-    public State getState() {
-        return state;
-    }
-
-    public void setState(State state) {
-        this.state = state;
     }
 
     public List<Forum> getForums() {

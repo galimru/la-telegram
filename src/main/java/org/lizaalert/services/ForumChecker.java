@@ -28,7 +28,7 @@ public class ForumChecker {
 
     private final Log log = LogFactory.getLog(ForumChecker.class);
 
-    private static final long DELAY = 3 * 60 * 1000;
+    private static final long DELAY = 5 * 60 * 1000;
     private static final double REQUESTS_PER_SECOND = 2;
 
     @Value("${org.lizaalert.viewforum.url}")
@@ -45,7 +45,7 @@ public class ForumChecker {
 
     @Scheduled(fixedDelay = DELAY)
     public void run() {
-        List<Forum> forums = forumRepository.findAllEnabled();
+        List<Forum> forums = forumRepository.findAll();
 
         for(Forum forum : forums) {
             rateLimiter.acquire();

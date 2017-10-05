@@ -2,6 +2,8 @@ databaseChangeLog:
   - include:
       file: classpath:liquibase/db/20170810-1-bootstrap.sql
   - include:
+      file: classpath:liquibase/db/20170810-1-insert-categories.sql
+  - include:
       file: classpath:liquibase/db/20170810-2-insert-forums.sql
   - include:
       file: classpath:liquibase/db/20170817-1-insert-states.sql

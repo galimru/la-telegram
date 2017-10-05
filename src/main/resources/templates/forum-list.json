@@ -1,0 +1,18 @@
+{
+  "chat_id" : "${user_id}",
+  "text" : "Список областей 🌏",
+  "parse_mode" : "markdown",
+  "reply_markup" : {
+    "@class" : "com.github.galimru.telegram.model.InlineKeyboardMarkup",
+    "inline_keyboard" : [
+      <#list forums as forum>
+      [
+        {
+          "text" : "${forum.name}",
+          "callback_data" : "${forum.id}"
+        }
+      ]<#if forum?has_next>,</#if>
+      </#list>
+    ]
+  }
+}

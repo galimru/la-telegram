@@ -1,16 +1,20 @@
-package org.lizaalert.providers;
+package org.lizaalert.services;
 
+import com.github.galimru.telegram.model.Update;
 import org.lizaalert.entities.User;
 import org.lizaalert.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class UserProvider {
+public class UserService {
 
     @Autowired private UserRepository userRepository;
 
-    public User getUser(com.github.galimru.telegram.model.User telegramUser) {
+    public User getUser(Update update) {
+        com.github.galimru.telegram.model.User telegramUser = update.getCallbackQuery() != null
+                ? update.getCallbackQuery().getFrom()
+                : update.getMessage().getFrom();
         User user = userRepository.findByUserId(telegramUser.getId());
         if (user == null) {
             user = new User();
@@ -18,8 +22,6 @@ public class UserProvider {
             user.setUsername(telegramUser.getUsername());
             user.setFirstName(telegramUser.getFirstName());
             user.setLastName(telegramUser.getLastName());
-            user.setChatId(String.valueOf(telegramUser.getId()));
-            user.setState(null);
             userRepository.save(user);
         }
         return user;

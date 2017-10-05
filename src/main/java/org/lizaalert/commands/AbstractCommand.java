@@ -1,59 +1,53 @@
 package org.lizaalert.commands;
 
-import com.github.galimru.telegram.actions.SendMessage;
-import org.lizaalert.entities.State;
-import org.lizaalert.entities.User;
+import com.github.galimru.telegram.model.Update;
+import org.lizaalert.entities.Session;
 import org.lizaalert.providers.ContextProvider;
-import org.lizaalert.services.QueueService;
-import org.lizaalert.services.TemplateService;
+import org.lizaalert.services.MessageService;
 
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.Map;
-import java.util.UUID;
 
 public abstract class AbstractCommand {
 
-    private static final String CHAT_ID_PARAM = "chatId";
+    protected Session session;
+    protected Update update;
 
-    protected User user;
-    protected State state;
-    protected String text;
+    protected MessageService messageService;
 
-    private TemplateService templateService;
-    private QueueService queueService;
-
-    public AbstractCommand(User user, State state, String text) {
-        this.user = user;
-        this.state = state;
-        this.text = text;
-        this.templateService = ContextProvider.getBean(TemplateService.class);
-        this.queueService = ContextProvider.getBean(QueueService.class);
+    public AbstractCommand(Session session, Update update) {
+        this.session = session;
+        this.update = update;
+        this.messageService = ContextProvider.getBean(MessageService.class);
     }
 
-    public User getUser() {
-        return user;
+    public Session getSession() {
+        return session;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setSession(Session session) {
+        this.session = session;
     }
 
-    public State getState() {
-        return state;
+    public Update getUpdate() {
+        return update;
     }
 
-    public void setState(State state) {
-        this.state = state;
+    public void setUpdate(Update update) {
+        this.update = update;
     }
 
-    protected void sendTemplate(UUID templateId, Map<String, Object> params) {
-        if (params == null) {
-            params = new HashMap<>();
-        }
-        params.put(CHAT_ID_PARAM, user.getChatId());
-        SendMessage message = templateService.createMessage(templateId, params);
-        queueService.pushMessage(message);
+    protected void sendResponse(String templateId) {
+        sendResponse(templateId, null);
     }
 
-    public abstract void execute();
+    protected void sendResponse(String templateId, String key, Object value) {
+        sendResponse(templateId, Collections.singletonMap(key, value));
+    }
+
+    protected void sendResponse(String templateId, Map<String, Object> parameters) {
+        messageService.sendResponse(session, templateId, parameters);
+    }
+
+    public abstract boolean execute();
 }

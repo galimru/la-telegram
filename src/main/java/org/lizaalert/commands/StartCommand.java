@@ -1,20 +1,22 @@
 package org.lizaalert.commands;
 
-import org.lizaalert.entities.State;
-import org.lizaalert.entities.User;
+import com.github.galimru.telegram.model.Update;
+import org.lizaalert.entities.Session;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.UUID;
 
 public class StartCommand extends AbstractCommand {
 
-    public StartCommand(User user, State state, String text) {
-        super(user, state, text);
+    public StartCommand(Session session, Update update) {
+        super(session, update);
     }
 
     @Override
-    public void execute() {
-        sendTemplate(UUID.fromString("cd5a8d1d-daf8-43a8-b478-7b58901885c2"), new HashMap<>());
+    public boolean execute() {
+        sendResponse("welcome");
+        return true;
     }
 
 }

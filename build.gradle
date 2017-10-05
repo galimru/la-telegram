@@ -29,7 +29,7 @@ dependencies {
     compile 'org.springframework.boot:spring-boot-starter-data-jpa:1.5.6.RELEASE'
     compile 'org.springframework.boot:spring-boot-starter-amqp:1.5.6.RELEASE'
     compile 'org.springframework.boot:spring-boot-starter-freemarker:1.5.6.RELEASE'
-    compile 'com.github.galimru:telegram-model:e3c6bbd092'
+    compile 'com.github.galimru:telegram-model:master-SNAPSHOT'
     compile 'postgresql:postgresql:9.1-901.jdbc4'
     compile 'org.liquibase:liquibase-core:3.5.3'
     compile 'org.jsoup:jsoup:1.10.3'

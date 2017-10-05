@@ -11,24 +11,26 @@ import java.util.List;
 public class Forum extends AbstractEntity implements Serializable {
     private static final long serialVersionUID = -7777592042814814244L;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "CATEGORY_ID")
+    private Category category;
+
     @Column(name = "NAME")
     private String name;
 
     @Column(name = "FORUM_ID")
     private Integer forumId;
 
-    @Column(name = "ENABLED")
-    private Boolean enabled;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "PARENT_ID")
-    private Forum parent;
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "parent")
-    private List<Forum> forums = new ArrayList<>();
-
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "forum")
     private List<Topic> topics = new ArrayList<>();
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
 
     public String getName() {
         return name;
@@ -44,30 +46,6 @@ public class Forum extends AbstractEntity implements Serializable {
 
     public void setForumId(Integer forumId) {
         this.forumId = forumId;
-    }
-
-    public Boolean getEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(Boolean enabled) {
-        this.enabled = enabled;
-    }
-
-    public Forum getParent() {
-        return parent;
-    }
-
-    public void setParent(Forum parent) {
-        this.parent = parent;
-    }
-
-    public List<Forum> getForums() {
-        return forums;
-    }
-
-    public void setForums(List<Forum> forums) {
-        this.forums = forums;
     }
 
     public List<Topic> getTopics() {

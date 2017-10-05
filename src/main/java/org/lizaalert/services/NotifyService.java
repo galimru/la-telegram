@@ -21,7 +21,7 @@ public class NotifyService {
         List<User> users = userRepository.findByForumId(topic.getForum().getForumId());
         for(User user : users) {
             SendMessage request = new SendMessage()
-                    .setChatId(user.getChatId())
+                    .setChatId(String.valueOf(user.getUserId()))
                     .setParseMode(ParseMode.HTML)
                     .setText(topic.getMessage())
                     .setReplyMarkup(new ForceReply()

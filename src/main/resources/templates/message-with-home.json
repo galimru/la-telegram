@@ -1,13 +1,13 @@
 {
-  "chat_id" : "${chatId}",
-  "text" : "${text}: Выберите область",
+  "chat_id" : "${user_id}",
+  "text" : "${text}",
   "parse_mode" : "markdown",
   "reply_markup" : {
     "resize_keyboard" : "true",
     "keyboard" : [
       [
         {
-          "text" : "Главное меню"
+          "text" : "В начало 🏠"
         }
       ]
     ]

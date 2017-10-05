@@ -12,23 +12,23 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.Map;
-import java.util.UUID;
 
 @Service
 public class TemplateService {
 
     private final Log log = LogFactory.getLog(TemplateService.class);
 
+    public static final String USER_ID_PARAM = "user_id";
     private static final String TEMPLATE_EXTENSION = ".json";
 
     @Autowired private Configuration freemarkerConfiguration;
 
-    public SendMessage createMessage(UUID templateId, Map<String, Object> params) {
+    public SendMessage createMessage(String templateId, Map<String, Object> params) {
         String templateContent = processTemplate(templateId, params);
         return transformMessage(templateContent);
     }
 
-    private String processTemplate(UUID templateId, Map<String, Object> params) {
+    private String processTemplate(String templateId, Map<String, Object> params) {
             String templateName = templateId + TEMPLATE_EXTENSION;
             StringWriter writer = new StringWriter();
             try {

@@ -2,6 +2,7 @@ package org.lizaalert.services;
 
 import com.github.galimru.telegram.actions.GenericRequest;
 import com.github.galimru.telegram.actions.SendMessage;
+import com.github.galimru.telegram.model.Update;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,7 @@ import org.springframework.web.client.RestTemplate;
 @Component
 public class TelegramService {
 
-    private final Log log = LogFactory.getLog(ForumChecker.class);
+    private final Log log = LogFactory.getLog(TelegramService.class);
 
     private static final String SEND_MESSAGE_METHOD = "sendMessage";
 
@@ -35,6 +36,9 @@ public class TelegramService {
             }
         } catch (HttpStatusCodeException e) {
             log.error("Error on sending request to telegram", e);
+            if (log.isDebugEnabled()) {
+                log.debug("Response: " +  e.getResponseBodyAsString());
+            }
         }
     }
 

@@ -1,0 +1,18 @@
+{
+  "chat_id" : "${user_id}",
+  "text" : "Список регионов 🌏",
+  "parse_mode" : "markdown",
+  "reply_markup" : {
+    "@class" : "com.github.galimru.telegram.model.InlineKeyboardMarkup",
+    "inline_keyboard" : [
+      <#list categories as category>
+      [
+        {
+          "text" : "${category.name}",
+          "callback_data" : "${category.id}"
+        }
+      ]<#if category?has_next>,</#if>
+      </#list>
+    ]
+  }
+}

@@ -5,7 +5,7 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "LA_STATE", uniqueConstraints =
-@UniqueConstraint(name = "FK_LA_STATE_PARENT_ID_COMMAND", columnNames = {"parent_id", "command"}))
+@UniqueConstraint(name = "FK_LA_STATE_PARENT_ID_COMMAND", columnNames = {"PARENT_ID", "COMMAND"}))
 public class State extends AbstractEntity implements Serializable {
     private static final long serialVersionUID = 6356320412144772436L;
 
@@ -18,6 +18,10 @@ public class State extends AbstractEntity implements Serializable {
 
     @Column(name = "CLASS_NAME")
     private String className;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "TRANSITION_TO")
+    private State transitionTo;
 
     public State getParent() {
         return parent;
@@ -43,4 +47,11 @@ public class State extends AbstractEntity implements Serializable {
         this.className = className;
     }
 
+    public State getTransitionTo() {
+        return transitionTo;
+    }
+
+    public void setTransitionTo(State transitionTo) {
+        this.transitionTo = transitionTo;
+    }
 }

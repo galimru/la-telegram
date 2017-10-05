@@ -1,6 +1,7 @@
 package org.lizaalert.services;
 
 import com.github.galimru.telegram.actions.SendMessage;
+import com.github.galimru.telegram.model.Update;
 import org.lizaalert.entities.Topic;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;

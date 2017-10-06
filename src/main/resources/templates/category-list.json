@@ -1,6 +1,6 @@
 {
   "chat_id" : "${user_id}",
-  "text" : "Список регионов 🌏",
+  "text" : "Выберите раздел форума из списка ниже:",
   "parse_mode" : "markdown",
   "reply_markup" : {
     "@class" : "com.github.galimru.telegram.model.InlineKeyboardMarkup",

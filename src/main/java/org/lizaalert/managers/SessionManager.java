@@ -1,7 +1,8 @@
-package org.lizaalert.providers;
+package org.lizaalert.managers;
 
 import org.lizaalert.entities.Session;
 import org.lizaalert.entities.SessionParam;
+import org.lizaalert.repositories.SessionRepository;
 import org.lizaalert.services.SessionService;
 
 import java.util.HashSet;
@@ -54,8 +55,8 @@ public class SessionManager {
 
     public void save() {
         updateParams();
-        SessionService sessionService = ContextProvider.getBean(SessionService.class);
-        sessionService.save(session);
+        SessionRepository sessionRepository = ContextProvider.getBean(SessionRepository.class);
+        sessionRepository.save(session);
     }
 
     protected void updateParams() {

@@ -21,7 +21,4 @@ public class SessionService {
         return session;
     }
 
-    public void save(Session session) {
-        sessionRepository.save(session);
-    }
 }

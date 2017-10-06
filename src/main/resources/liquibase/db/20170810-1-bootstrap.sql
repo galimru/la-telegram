@@ -43,6 +43,34 @@ CREATE TABLE la_topic
   CONSTRAINT fk_la_topic_topic_id UNIQUE (topic_id)
 );
 
+CREATE TABLE la_state
+(
+  id uuid NOT NULL,
+  created_at timestamp without time zone,
+  updated_at timestamp without time zone,
+  class_name character varying(255),
+  name character varying(255),
+  CONSTRAINT la_state_pkey PRIMARY KEY (id),
+  CONSTRAINT fk_la_state_class_name UNIQUE (class_name)
+);
+
+CREATE TABLE la_route
+(
+  id uuid NOT NULL,
+  created_at timestamp without time zone,
+  updated_at timestamp without time zone,
+  command character varying(255),
+  next_state_id uuid,
+  prev_state_id uuid,
+  CONSTRAINT la_route_pkey PRIMARY KEY (id),
+  CONSTRAINT fk5s80m6a93gampqhygkfh8151h FOREIGN KEY (prev_state_id)
+      REFERENCES la_state (id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT fkrcs9d922whif9chxg8iowmx18 FOREIGN KEY (next_state_id)
+      REFERENCES la_state (id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION
+);
+
 CREATE TABLE la_user
 (
   id uuid NOT NULL,
@@ -56,23 +84,21 @@ CREATE TABLE la_user
   CONSTRAINT fk_la_user_user_id UNIQUE (user_id)
 );
 
-CREATE TABLE la_state
+CREATE TABLE la_subscribe
 (
   id uuid NOT NULL,
   created_at timestamp without time zone,
   updated_at timestamp without time zone,
-  class_name character varying(255),
-  command character varying(255),
-  parent_id uuid,
-  transition_to uuid,
-  CONSTRAINT la_state_pkey PRIMARY KEY (id),
-  CONSTRAINT fkfa92k3vao2u8tiqt2kc4qjg25 FOREIGN KEY (parent_id)
-      REFERENCES la_state (id) MATCH SIMPLE
+  forum_id uuid,
+  user_id uuid,
+  CONSTRAINT la_subscribe_pkey PRIMARY KEY (id),
+  CONSTRAINT fk5tspufcpf8lff779r3ojgtt4o FOREIGN KEY (forum_id)
+      REFERENCES la_forum (id) MATCH SIMPLE
       ON UPDATE NO ACTION ON DELETE NO ACTION,
-  CONSTRAINT fkwu4a2rvrhh0xbs8ekujocb4 FOREIGN KEY (transition_to)
-      REFERENCES la_state (id) MATCH SIMPLE
+  CONSTRAINT fkrs1iysx2jrayrlgkhahs6g7nn FOREIGN KEY (user_id)
+      REFERENCES la_user (id) MATCH SIMPLE
       ON UPDATE NO ACTION ON DELETE NO ACTION,
-  CONSTRAINT fk_la_state_parent_id_command UNIQUE (parent_id, command)
+  CONSTRAINT fk_la_subscribe_user_id_forum_id UNIQUE (user_id, forum_id)
 );
 
 CREATE TABLE la_session
@@ -105,16 +131,4 @@ CREATE TABLE la_session_param
       REFERENCES la_session (id) MATCH SIMPLE
       ON UPDATE NO ACTION ON DELETE NO ACTION,
   CONSTRAINT fk_la_session_param_session_id_key UNIQUE (session_id, key)
-);
-
-CREATE TABLE la_user_forum_ref
-(
-  user_id uuid NOT NULL,
-  forum_id uuid NOT NULL,
-  CONSTRAINT fkgxcebiodnd51lysaryxud9eis FOREIGN KEY (forum_id)
-      REFERENCES la_forum (id) MATCH SIMPLE
-      ON UPDATE NO ACTION ON DELETE NO ACTION,
-  CONSTRAINT fkm7tlq4gh1504e6lp45hjelqi9 FOREIGN KEY (user_id)
-      REFERENCES la_user (id) MATCH SIMPLE
-      ON UPDATE NO ACTION ON DELETE NO ACTION
 );

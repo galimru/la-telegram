@@ -1,9 +1,10 @@
 package org.lizaalert.entities;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "LA_USER", uniqueConstraints =
@@ -22,12 +23,6 @@ public class User extends AbstractEntity implements Serializable {
 
     @Column(name = "LAST_NAME")
     private String lastName;
-
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "LA_USER_FORUM_REF",
-            joinColumns = @JoinColumn(name = "USER_ID"),
-            inverseJoinColumns = @JoinColumn(name = "FORUM_ID"))
-    private List<Forum> forums = new ArrayList<>();
 
     public Integer getUserId() {
         return userId;
@@ -59,13 +54,5 @@ public class User extends AbstractEntity implements Serializable {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
-    }
-
-    public List<Forum> getForums() {
-        return forums;
-    }
-
-    public void setForums(List<Forum> forums) {
-        this.forums = forums;
     }
 }

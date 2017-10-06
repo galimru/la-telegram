@@ -1,4 +1,4 @@
-package org.lizaalert.providers;
+package org.lizaalert.managers;
 
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;

@@ -1,25 +1,22 @@
-package org.lizaalert.builders;
+package org.lizaalert.commands;
 
-import com.github.galimru.telegram.model.Update;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.lizaalert.commands.AbstractCommand;
-import org.lizaalert.entities.Session;
-import org.lizaalert.entities.State;
-import org.lizaalert.entities.User;
+import com.google.common.base.Preconditions;
 import org.lizaalert.exceptions.CommandNotFoundException;
-import org.lizaalert.providers.SessionManager;
+import org.lizaalert.managers.SessionManager;
 
 import java.lang.reflect.InvocationTargetException;
 
 public class CommandBuilder {
 
-    private State state;
     private SessionManager sessionManager;
-    private Update update;
+    private String className;
 
-    public CommandBuilder(State state) {
-        this.state = state;
+    public CommandBuilder() {
+    }
+
+    public CommandBuilder(SessionManager sessionManager, String className) {
+        this.sessionManager = sessionManager;
+        this.className = className;
     }
 
     public CommandBuilder setSessionManager(SessionManager sessionManager) {
@@ -27,18 +24,19 @@ public class CommandBuilder {
         return this;
     }
 
-    public CommandBuilder setUpdate(Update update) {
-        this.update = update;
+    public CommandBuilder setClassName(String className) {
+        this.className = className;
         return this;
     }
 
     public AbstractCommand build() {
-        String className = state.getClassName();
+        Preconditions.checkNotNull(className);
+        Preconditions.checkNotNull(sessionManager);
         AbstractCommand command;
         try {
             command = (AbstractCommand) Class.forName(className)
-                    .getConstructor(SessionManager.class, Update.class)
-                    .newInstance(new Object[]{sessionManager, update});
+                    .getConstructor(SessionManager.class)
+                    .newInstance(new Object[]{sessionManager});
         } catch (ClassNotFoundException
                 | InstantiationException
                 | NoSuchMethodException

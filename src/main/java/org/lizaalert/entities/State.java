@@ -1,42 +1,29 @@
 package org.lizaalert.entities;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import java.io.Serializable;
 
 @Entity
 @Table(name = "LA_STATE", uniqueConstraints =
-@UniqueConstraint(name = "FK_LA_STATE_PARENT_ID_COMMAND", columnNames = {"PARENT_ID", "COMMAND"}))
+@UniqueConstraint(name = "FK_LA_STATE_CLASS_NAME", columnNames = {"CLASS_NAME"}))
 public class State extends AbstractEntity implements Serializable {
     private static final long serialVersionUID = 6356320412144772436L;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "PARENT_ID")
-    private State parent;
-
-    @Column(name = "COMMAND")
-    private String command;
+    @Column(name = "NAME")
+    private String name;
 
     @Column(name = "CLASS_NAME")
     private String className;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "TRANSITION_TO")
-    private State transitionTo;
-
-    public State getParent() {
-        return parent;
+    public String getName() {
+        return name;
     }
 
-    public void setParent(State parent) {
-        this.parent = parent;
-    }
-
-    public String getCommand() {
-        return command;
-    }
-
-    public void setCommand(String command) {
-        this.command = command;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getClassName() {
@@ -45,13 +32,5 @@ public class State extends AbstractEntity implements Serializable {
 
     public void setClassName(String className) {
         this.className = className;
-    }
-
-    public State getTransitionTo() {
-        return transitionTo;
-    }
-
-    public void setTransitionTo(State transitionTo) {
-        this.transitionTo = transitionTo;
     }
 }

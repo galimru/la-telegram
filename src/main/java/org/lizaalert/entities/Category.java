@@ -3,7 +3,9 @@ package org.lizaalert.entities;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "LA_CATEGORY")
@@ -14,7 +16,7 @@ public class Category extends AbstractEntity implements Serializable{
     private String name;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "category")
-    private List<Forum> forums = new ArrayList<>();
+    private Set<Forum> forums = new HashSet<>();
 
     public String getName() {
         return name;
@@ -24,11 +26,11 @@ public class Category extends AbstractEntity implements Serializable{
         this.name = name;
     }
 
-    public List<Forum> getForums() {
+    public Set<Forum> getForums() {
         return forums;
     }
 
-    public void setForums(List<Forum> forums) {
+    public void setForums(Set<Forum> forums) {
         this.forums = forums;
     }
 }

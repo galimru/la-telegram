@@ -7,3 +7,5 @@ databaseChangeLog:
       file: classpath:liquibase/db/20170810-2-insert-forums.sql
   - include:
       file: classpath:liquibase/db/20170817-1-insert-states.sql
+  - include:
+      file: classpath:liquibase/db/20171007-1-insert-routes.sql

@@ -82,12 +82,12 @@ public class ForumChecker {
                         topic.setTitle(title);
                         topic.setActive(ForumUtils.isActive(title));
                         reload(topic);
-                        topic = topicRepository.save(topic);
+                        topicRepository.saveAndFlush(topic);
                         queueService.pushNotification(topic);
                     } else if (!StringUtils.equals(title, topic.getTitle())) {
                         topic.setTitle(title);
                         topic.setActive(ForumUtils.isActive(title));
-                        topic = topicRepository.save(topic);
+                        topicRepository.saveAndFlush(topic);
                         queueService.pushNotification(topic);
                     }
                 }

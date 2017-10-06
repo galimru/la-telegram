@@ -10,7 +10,8 @@ import java.util.Date;
 import java.util.UUID;
 
 @MappedSuperclass
-public abstract class AbstractEntity {
+public abstract class AbstractEntity implements Serializable {
+    private static final long serialVersionUID = -4401406436082091074L;
 
     @Id
     @GeneratedValue

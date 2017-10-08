@@ -1,6 +1,8 @@
 --changeset galimru:insert-categories
 
 INSERT INTO la_category (id, created_at, updated_at, name)
+VALUES ('0bd6e50f-ada3-4aa0-8fa1-623286c3621b', now(), null, 'Москва и МО');
+INSERT INTO la_category (id, created_at, updated_at, name)
 VALUES ('19b29a28-495f-4877-80ca-78d51bd6f7d1', now(), null, 'Центральный');
 INSERT INTO la_category (id, created_at, updated_at, name)
 VALUES ('1ab5c2de-69b7-4d07-8be8-db2a0a49fbd5', now(), null, 'Южный');

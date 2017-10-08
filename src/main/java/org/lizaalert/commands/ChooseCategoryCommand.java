@@ -18,7 +18,7 @@ public class ChooseCategoryCommand extends AbstractCommand {
     public void execute(Update update) {
         CategoryRepository categoryRepository = ContextProvider.getBean(CategoryRepository.class);
         List<Category> categories = categoryRepository.findAll();
-        sendResponse("message-with-home", "text", "После оформления подписки вы будете получать уведомления о новых темах поиска на форуме.");
+        sendResponse("message-with-home", "text", "После оформления подписки вы будете получать уведомления о новых темах поиска на форуме");
         sendResponse("category-list", "categories", categories);
     }
 

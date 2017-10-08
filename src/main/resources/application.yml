@@ -11,6 +11,8 @@ spring.rabbitmq:
 #spring.jpa.hibernate.ddl-auto: create
 
 org.lizaalert:
+  app.token: ${APP_TOKEN}
+  botan.token: ${BOTAN_TOKEN}
   telegram.token: ${TELEGRAM_TOKEN}
   telegram.url: https://api.telegram.org/bot%s/%s
   viewforum.url: http://lizaalert.org/forum/viewforum.php?f=%d

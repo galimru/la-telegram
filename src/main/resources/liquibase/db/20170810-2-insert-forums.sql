@@ -1,4 +1,9 @@
 INSERT INTO la_forum (id, created_at, updated_at, forum_id, name,  category_id)
+VALUES ('828c859f-57d0-4a96-8942-a142154e1dda', now(), null, 243, 'Активные поиски', '0bd6e50f-ada3-4aa0-8fa1-623286c3621b');
+INSERT INTO la_forum (id, created_at, updated_at, forum_id, name,  category_id)
+VALUES ('5fc764a5-7b2c-4ea0-955b-f63ad7a1a027', now(), null, 41, 'Информационная поддержка', '0bd6e50f-ada3-4aa0-8fa1-623286c3621b');
+
+INSERT INTO la_forum (id, created_at, updated_at, forum_id, name,  category_id)
 VALUES ('e5dbe27d-6fe9-49b1-85cf-181c992c6255', now(), null, 236, 'Белгородская область', '19b29a28-495f-4877-80ca-78d51bd6f7d1');
 INSERT INTO la_forum (id, created_at, updated_at, forum_id, name,  category_id)
 VALUES ('f761e6a3-710d-423c-8e49-df3fc61fa86b', now(), null, 138, 'Брянская область', '19b29a28-495f-4877-80ca-78d51bd6f7d1');

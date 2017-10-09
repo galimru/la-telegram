@@ -30,31 +30,17 @@ public class UnsubscribeCommand extends AbstractCommand {
         Subscribe subscribe = subscribeRepository.findOne(UUID.fromString(subscribeId));
 
         if (subscribe != null) {
-            sendResponse("confirm-message", "text", String.format("Вы действительно хотите отменить подписку на %s", subscribe.getForum().getName()));
+            subscribeRepository.delete(subscribe);
+            sendResponse("message-with-home", "text", "Подписка успешно отменена");
+            BotanService botanService = ContextProvider.getBean(BotanService.class);
+            User user = sessionManager.getSession().getUser();
+            botanService.track(user, "unsubscribe", ImmutableMap.of(
+                    "forum", subscribe.getForum().getName(),
+                    "message", TelegramUtil.getMessage(update))
+            );
         } else {
             sendResponse("message", "text", "Подписка с таким названием не найдена");
         }
     }
 
-    @Override
-    public boolean complete(Update update) {
-        String text = TelegramUtil.getText(update);
-        if ("Да".equals(text)) {
-            sendResponse("message-with-home", "text", "Подписка успешно отменена");
-            BotanService botanService = ContextProvider.getBean(BotanService.class);
-            User user = sessionManager.getSession().getUser();
-            String subscribeId = sessionManager.get("subscribeId");
-            SubscribeRepository subscribeRepository = ContextProvider.getBean(SubscribeRepository.class);
-            Subscribe subscribe = subscribeRepository.findOne(UUID.fromString(subscribeId));
-            botanService.track(user, "unsubscribe", ImmutableMap.of(
-                    "forum", subscribe.getForum().getName(),
-                    "message", TelegramUtil.getMessage(update))
-            );
-            return true;
-        } else if ("Нет".equals(text)) {
-            sendResponse("message-with-home", "text", "Отмена не подтверждена");
-            return true;
-        }
-        return false;
-    }
 }

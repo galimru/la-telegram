@@ -9,3 +9,7 @@ databaseChangeLog:
       file: classpath:liquibase/db/20170817-1-insert-states.sql
   - include:
       file: classpath:liquibase/db/20171007-1-insert-routes.sql
+  - include:
+      file: classpath:liquibase/db/20171009-1-insert-states.sql
+  - include:
+      file: classpath:liquibase/db/20171009-2-insert-routes.sql

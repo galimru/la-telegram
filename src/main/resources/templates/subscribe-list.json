@@ -1,0 +1,18 @@
+{
+  "chat_id" : "${user_id}",
+  "text" : "Список оформленных подписок:",
+  "parse_mode" : "markdown",
+  "reply_markup" : {
+    "@class" : "com.github.galimru.telegram.model.InlineKeyboardMarkup",
+    "inline_keyboard" : [
+      <#list subscribes as subscribe>
+      [
+        {
+          "text" : "${subscribe.forum.name}",
+          "callback_data" : "${subscribe.id}"
+        }
+      ]<#if subscribe?has_next>,</#if>
+      </#list>
+    ]
+  }
+}

@@ -13,4 +13,6 @@ public interface SubscribeRepository extends JpaRepository<Subscribe, UUID> {
     Subscribe findByUserAndForum(User user, Forum forum);
     @EntityGraph(attributePaths = {"user"})
     List<Subscribe> findByForum(Forum forum);
+    @EntityGraph(attributePaths = {"forum"})
+    List<Subscribe> findByUser(User user);
 }

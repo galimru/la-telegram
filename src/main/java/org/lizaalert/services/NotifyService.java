@@ -29,9 +29,7 @@ public class NotifyService {
             SendMessage request = new SendMessage()
                     .setChatId(String.valueOf(user.getUserId()))
                     .setParseMode(ParseMode.HTML)
-                    .setText(topic.getMessage())
-                    .setReplyMarkup(new ForceReply()
-                            .setForceReply(true));
+                    .setText(topic.getMessage());
             telegramService.execute(request);
         }
     }

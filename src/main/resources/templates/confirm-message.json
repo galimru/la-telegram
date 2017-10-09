@@ -1,0 +1,18 @@
+{
+  "chat_id" : "${user_id}",
+  "text" : "${text}",
+  "parse_mode" : "markdown",
+  "reply_markup" : {
+    "resize_keyboard" : "true",
+    "keyboard" : [
+      [
+        {
+          "text" : "Да"
+        },
+        {
+          "text" : "Нет"
+        }
+      ]
+    ]
+  }
+}

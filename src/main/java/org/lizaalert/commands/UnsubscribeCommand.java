@@ -31,7 +31,7 @@ public class UnsubscribeCommand extends AbstractCommand {
 
         if (subscribe != null) {
             subscribeRepository.delete(subscribe);
-            sendResponse("message-with-home", "text", "Подписка успешно отменена");
+            sendResponse("message", "text", "Подписка успешно отменена");
             BotanService botanService = ContextProvider.getBean(BotanService.class);
             User user = sessionManager.getSession().getUser();
             botanService.track(user, "unsubscribe", ImmutableMap.of(

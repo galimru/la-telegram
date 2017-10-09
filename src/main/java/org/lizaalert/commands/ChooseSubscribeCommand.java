@@ -23,6 +23,7 @@ public class ChooseSubscribeCommand extends AbstractCommand {
     public void execute(Update update) {
         SubscribeRepository subscribeRepository = ContextProvider.getBean(SubscribeRepository.class);
         List<Subscribe> subscribes = subscribeRepository.findByUser(sessionManager.getSession().getUser());
+        sendResponse("message-with-home", "text", "Вы можете отменить офоромленную подписку, если вы больше не хотите получать уведомления");
         sendResponse("subscribe-list", "subscribes", subscribes);
     }
 

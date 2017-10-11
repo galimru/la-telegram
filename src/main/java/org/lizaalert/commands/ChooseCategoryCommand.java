@@ -1,7 +1,10 @@
 package org.lizaalert.commands;
 
 import com.github.galimru.telegram.methods.AnswerCallbackQuery;
+import com.github.galimru.telegram.methods.EditMessageText;
 import com.github.galimru.telegram.methods.SendMessage;
+import com.github.galimru.telegram.objects.CallbackQuery;
+import com.github.galimru.telegram.objects.Message;
 import com.github.galimru.telegram.objects.Update;
 import com.github.galimru.telegram.util.TelegramUtil;
 import com.google.common.collect.ImmutableMap;
@@ -43,6 +46,13 @@ public class ChooseCategoryCommand extends AbstractCommand {
                 sessionManager.put("categoryId", category.getId().toString());
                 call(new AnswerCallbackQuery()
                         .setCallbackQueryId(update.getCallbackQuery().getId()));
+                TelegramUtil.getCallbackQuery(update)
+                        .map(CallbackQuery::getMessage)
+                        .map(Message::getMessageId)
+                        .ifPresent(id -> call(new EditMessageText()
+                                .setMessageId(id)
+                                .setText(category.getName()))
+                        );
                 return true;
             }
             call(new AnswerCallbackQuery()
@@ -50,10 +60,6 @@ public class ChooseCategoryCommand extends AbstractCommand {
                     .setShowAlert(true)
                     .setText("Раздел с таким названием не найден"));
         }
-//        call(fromTemplate("message", SendMessage.class, ImmutableMap.of(
-//                "chat_id", chatId,
-//                "text", "Раздел с таким названием не найден"
-//        )));
         return false;
     }
 }

@@ -11,7 +11,6 @@ spring.rabbitmq:
 #spring.jpa.hibernate.ddl-auto: create
 
 org.lizaalert:
-  checkDelay: ${CHECK_DELAY}
   app.token: ${APP_TOKEN}
   botan.token: ${BOTAN_TOKEN}
   telegram.token: ${TELEGRAM_TOKEN}

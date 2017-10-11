@@ -43,7 +43,7 @@ public class ForumService {
 
     private RateLimiter rateLimiter = RateLimiter.create(REQUESTS_PER_SECOND);
 
-    @Scheduled(fixedDelayString = "${org.lizaalert.checkDelay}", initialDelay = DELAY)
+    @Scheduled(fixedDelay = DELAY, initialDelay = DELAY)
     public void run() {
         List<Forum> forums = forumRepository.findAll();
 

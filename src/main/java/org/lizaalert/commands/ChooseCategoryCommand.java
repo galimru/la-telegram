@@ -50,6 +50,7 @@ public class ChooseCategoryCommand extends AbstractCommand {
                         .map(CallbackQuery::getMessage)
                         .map(Message::getMessageId)
                         .ifPresent(id -> call(new EditMessageText()
+                                .setChatId(chatId)
                                 .setMessageId(id)
                                 .setText(category.getName()))
                         );

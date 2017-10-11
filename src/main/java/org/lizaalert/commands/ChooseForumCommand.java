@@ -1,6 +1,9 @@
 package org.lizaalert.commands;
 
+import com.github.galimru.telegram.methods.EditMessageText;
 import com.github.galimru.telegram.methods.SendMessage;
+import com.github.galimru.telegram.objects.CallbackQuery;
+import com.github.galimru.telegram.objects.Message;
 import com.github.galimru.telegram.objects.Update;
 import com.github.galimru.telegram.util.TelegramUtil;
 import com.google.common.collect.ImmutableMap;
@@ -43,6 +46,14 @@ public class ChooseForumCommand extends AbstractCommand {
             Forum forum = forumRepository.findOne(UUID.fromString(forumId));
             if (forum != null) {
                 sessionManager.put("forumId", forum.getId().toString());
+                TelegramUtil.getCallbackQuery(update)
+                        .map(CallbackQuery::getMessage)
+                        .map(Message::getMessageId)
+                        .ifPresent(id -> call(new EditMessageText()
+                                .setChatId(chatId)
+                                .setMessageId(id)
+                                .setText("Выбран подраздел: " + forum.getName()))
+                        );
                 return true;
             }
         }

@@ -44,15 +44,13 @@ public class ChooseCategoryCommand extends AbstractCommand {
             Category category = categoryRepository.findOne(UUID.fromString(categoryId));
             if (category != null) {
                 sessionManager.put("categoryId", category.getId().toString());
-                call(new AnswerCallbackQuery()
-                        .setCallbackQueryId(update.getCallbackQuery().getId()));
                 TelegramUtil.getCallbackQuery(update)
                         .map(CallbackQuery::getMessage)
                         .map(Message::getMessageId)
                         .ifPresent(id -> call(new EditMessageText()
                                 .setChatId(chatId)
                                 .setMessageId(id)
-                                .setText(category.getName()))
+                                .setText("Выбран раздел: " + category.getName()))
                         );
                 return true;
             }

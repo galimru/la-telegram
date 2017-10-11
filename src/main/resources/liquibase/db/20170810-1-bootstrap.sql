@@ -106,6 +106,7 @@ CREATE TABLE la_session
   id uuid NOT NULL,
   created_at timestamp without time zone,
   updated_at timestamp without time zone,
+  chat_id character varying(255),
   state_id uuid,
   user_id uuid,
   CONSTRAINT la_session_pkey PRIMARY KEY (id),

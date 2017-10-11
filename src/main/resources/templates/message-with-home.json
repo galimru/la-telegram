@@ -1,5 +1,5 @@
 {
-  "chat_id" : "${user_id}",
+  "chat_id" : "${chat_id}",
   "text" : "${text}",
   "parse_mode" : "markdown",
   "reply_markup" : {

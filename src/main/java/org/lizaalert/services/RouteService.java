@@ -1,7 +1,9 @@
 package org.lizaalert.services;
 
-import com.github.galimru.telegram.model.Message;
-import com.github.galimru.telegram.model.Update;
+import com.github.galimru.telegram.objects.Message;
+import com.github.galimru.telegram.objects.Update;
+import com.github.galimru.telegram.objects.User;
+import com.github.galimru.telegram.util.TelegramUtil;
 import com.google.common.collect.ImmutableMap;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -15,6 +17,8 @@ import org.lizaalert.repositories.RouteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
 @Component
 public class RouteService {
 
@@ -24,9 +28,9 @@ public class RouteService {
     @Autowired private BotanService botanService;
 
     public Route resolve(Session session, Update update) {
-        String command = update.getCallbackQuery() != null
-                ? update.getCallbackQuery().getData()
-                : update.getMessage().getText();
+        String command = TelegramUtil.getText(update)
+                .orElse(TelegramUtil.getCallbackData(update)
+                        .orElse(null));
         State prevState = session.getState();
         // find global route
         Route route = routeRepository.findByCommandAndPrevStateIsNull(command);
@@ -44,9 +48,7 @@ public class RouteService {
             return route;
         }
         if (log.isDebugEnabled()) {
-            log.debug(String.format("Can't resolve route for state %s and command %s",
-                    prevState != null ? prevState.getId().toString() : "<null>",
-                    command != null ? command : "<null>"));
+            log.debug(String.format("Can't resolve route for state %s and command %s", prevState, command));
         }
         return null;
     }
@@ -58,6 +60,7 @@ public class RouteService {
         } else {
             State prevState = route.getPrevState();
             AbstractCommand prevCommand = new CommandBuilder()
+                    .setChatId(session.getChatId())
                     .setSessionManager(sessionManager)
                     .setClassName(prevState.getClassName())
                     .build();
@@ -68,10 +71,8 @@ public class RouteService {
     }
 
     private void apply(SessionManager sessionManager, Route route, Update update) {
-        Message message = update.getCallbackQuery() != null
-                ? update.getCallbackQuery().getMessage()
-                : update.getMessage();
         AbstractCommand command = new CommandBuilder()
+                .setChatId(sessionManager.getSession().getChatId())
                 .setSessionManager(sessionManager)
                 .setClassName(route.getNextState().getClassName())
                 .build();
@@ -79,11 +80,11 @@ public class RouteService {
         sessionManager.getSession().setState(route.getNextState());
         sessionManager.save();
         botanService.track(sessionManager.getSession().getUser(), "route", ImmutableMap.of(
-                "command", message.getText(),
-                "state", ImmutableMap.of(route.getPrevState() != null ? route.getPrevState().getName() : "<null>",
-                        route.getNextState() != null ? route.getNextState().getName() : "<null>"),
-                "message", message)
-        );
+                "from", TelegramUtil.getFrom(update).orElse(new User()),
+                "data", TelegramUtil.getCallbackData(update).orElse(""),
+                "text", TelegramUtil.getText(update).orElse(""),
+                "state", Optional.of(route.getNextState()).map(State::getName).orElse("")
+        ));
     }
 
 }

@@ -1,7 +1,8 @@
 package org.lizaalert.commands;
 
-import com.github.galimru.telegram.model.Message;
-import com.github.galimru.telegram.model.Update;
+import com.github.galimru.telegram.methods.SendMessage;
+import com.github.galimru.telegram.objects.Message;
+import com.github.galimru.telegram.objects.Update;
 import com.google.common.collect.ImmutableMap;
 import org.lizaalert.entities.Forum;
 import org.lizaalert.entities.Subscribe;
@@ -16,8 +17,8 @@ import java.util.UUID;
 
 public class SubscribeCommand extends AbstractCommand {
 
-    public SubscribeCommand(SessionManager sessionManager) {
-        super(sessionManager);
+    public SubscribeCommand(String chatId, SessionManager sessionManager) {
+        super(chatId, sessionManager);
     }
 
     @Override
@@ -36,7 +37,10 @@ public class SubscribeCommand extends AbstractCommand {
             subscribe.setUser(user);
             subscribe.setForum(forum);
             subscribeRepository.save(subscribe);
-            sendResponse("message", "text", String.format("Вы успешно подписаны на %s", forum.getName()));
+            call(fromTemplate("message", SendMessage.class, ImmutableMap.of(
+                    "chat_id", chatId,
+                    "text", String.format("Вы успешно подписаны на %s", forum.getName())
+            )));
             BotanService botanService = ContextProvider.getBean(BotanService.class);
             Message message = update.getCallbackQuery() != null
                     ? update.getCallbackQuery().getMessage()
@@ -46,7 +50,10 @@ public class SubscribeCommand extends AbstractCommand {
                     "message", message)
             );
         } else {
-            sendResponse("message", "text", String.format("Вы уже имеете подписку на %s", forum.getName()));
+            call(fromTemplate("message", SendMessage.class, ImmutableMap.of(
+                    "chat_id", chatId,
+                    "text", String.format("Вы уже имеете подписку на %s", forum.getName())
+            )));
         }
     }
 }

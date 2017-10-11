@@ -1,7 +1,7 @@
 package org.lizaalert.test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.galimru.telegram.actions.SendMessage;
+import com.github.galimru.telegram.methods.SendMessage;
 import com.google.common.io.Files;
 import org.junit.Test;
 

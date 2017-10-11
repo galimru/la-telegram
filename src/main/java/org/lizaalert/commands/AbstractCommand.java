@@ -1,21 +1,26 @@
 package org.lizaalert.commands;
 
-import com.github.galimru.telegram.model.Update;
+import com.github.galimru.telegram.methods.AbstractMethod;
+import com.github.galimru.telegram.objects.Update;
 import org.lizaalert.managers.ContextProvider;
 import org.lizaalert.managers.SessionManager;
-import org.lizaalert.services.MessageService;
+import org.lizaalert.services.QueueService;
+import org.lizaalert.services.TemplateService;
 
-import java.util.Collections;
 import java.util.Map;
 
 public abstract class AbstractCommand {
 
+    protected String chatId;
     protected SessionManager sessionManager;
-    protected MessageService messageService;
+    protected QueueService queueService;
+    protected TemplateService templateService;
 
-    public AbstractCommand(SessionManager sessionManager) {
+    public AbstractCommand(String chatId, SessionManager sessionManager) {
+        this.chatId = chatId;
         this.sessionManager = sessionManager;
-        this.messageService = ContextProvider.getBean(MessageService.class);
+        this.queueService = ContextProvider.getBean(QueueService.class);
+        this.templateService = ContextProvider.getBean(TemplateService.class);
     }
 
     public SessionManager getSessionManager() {
@@ -32,16 +37,12 @@ public abstract class AbstractCommand {
         return true;
     }
 
-    protected void sendResponse(String templateId) {
-        sendResponse(templateId, null);
+    protected void call(AbstractMethod method) {
+        queueService.asyncCall(method);
     }
 
-    protected void sendResponse(String templateId, String key, Object value) {
-        sendResponse(templateId, Collections.singletonMap(key, value));
+    protected <T extends AbstractMethod> T fromTemplate(String templateName, Class<T> templateClass,
+                                          Map<String, Object> params) {
+        return templateService.fromTemplate(templateName, templateClass, params);
     }
-
-    protected void sendResponse(String templateId, Map<String, Object> parameters) {
-        messageService.sendResponse(sessionManager.getSession(), templateId, parameters);
-    }
-
 }

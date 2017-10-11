@@ -11,3 +11,9 @@ VALUES ('98250cf3-36f3-4346-96f6-e70d987e126e', now(), null, 'Выбор фор�
 
 INSERT INTO la_state (id, created_at, updated_at, name, class_name)
 VALUES ('3c38eff9-9289-4842-a272-dad5ed1e240d', now(), null, 'Оформление подписки', 'org.lizaalert.commands.SubscribeCommand');
+
+INSERT INTO la_state (id, created_at, updated_at, name, class_name)
+VALUES ('3d1567b0-6909-4ea6-a847-6cf7b814ba40', now(), null, 'Выбор подписки', 'org.lizaalert.commands.ChooseSubscribeCommand');
+
+INSERT INTO la_state (id, created_at, updated_at, name, class_name)
+VALUES ('6a945a31-ecbe-4d20-b237-0808715c1e79', now(), null, 'Отмена подписки', 'org.lizaalert.commands.UnsubscribeCommand');

@@ -24,9 +24,9 @@ import java.io.IOException;
 import java.util.List;
 
 @Component
-public class ForumChecker {
+public class ForumService {
 
-    private final Log log = LogFactory.getLog(ForumChecker.class);
+    private final Log log = LogFactory.getLog(ForumService.class);
 
     private static final long DELAY = 5 * 60 * 1000;
     private static final double REQUESTS_PER_SECOND = 2;
@@ -43,7 +43,7 @@ public class ForumChecker {
 
     private RateLimiter rateLimiter = RateLimiter.create(REQUESTS_PER_SECOND);
 
-    @Scheduled(fixedDelay = DELAY)
+    @Scheduled(fixedDelayString = "${org.lizaalert.checkDelay}", initialDelay = DELAY)
     public void run() {
         List<Forum> forums = forumRepository.findAll();
 
@@ -83,12 +83,12 @@ public class ForumChecker {
                         topic.setActive(ForumUtils.isActive(title));
                         reload(topic);
                         topicRepository.saveAndFlush(topic);
-                        queueService.pushNotification(topic);
+                        queueService.asyncNotify(topic);
                     } else if (!StringUtils.equals(title, topic.getTitle())) {
                         topic.setTitle(title);
                         topic.setActive(ForumUtils.isActive(title));
                         topicRepository.saveAndFlush(topic);
-                        queueService.pushNotification(topic);
+                        queueService.asyncNotify(topic);
                     }
                 }
             }

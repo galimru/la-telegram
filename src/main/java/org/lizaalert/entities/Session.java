@@ -19,6 +19,9 @@ public class Session extends AbstractEntity implements Serializable {
     @JoinColumn(name = "STATE_ID")
     private State state;
 
+    @Column(name = "CHAT_ID")
+    private String chatId;
+
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "session",
             cascade = CascadeType.ALL)
     private List<SessionParam> params = new ArrayList<>();
@@ -37,6 +40,14 @@ public class Session extends AbstractEntity implements Serializable {
 
     public void setState(State state) {
         this.state = state;
+    }
+
+    public String getChatId() {
+        return chatId;
+    }
+
+    public void setChatId(String chatId) {
+        this.chatId = chatId;
     }
 
     public List<SessionParam> getParams() {

@@ -5,7 +5,6 @@ import io.botan.sdk.Botan;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.http.impl.nio.client.CloseableHttpAsyncClient;
-import org.apache.http.impl.nio.client.HttpAsyncClientBuilder;
 import org.apache.http.impl.nio.client.HttpAsyncClients;
 import org.lizaalert.entities.User;
 import org.springframework.beans.factory.annotation.Value;

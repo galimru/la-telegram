@@ -1,9 +1,9 @@
 {
-  "chat_id" : "${user_id}",
+  "chat_id" : "${chat_id}",
   "text" : "Выберите раздел форума из списка ниже:",
   "parse_mode" : "markdown",
   "reply_markup" : {
-    "@class" : "com.github.galimru.telegram.model.InlineKeyboardMarkup",
+    "@class" : "com.github.galimru.telegram.objects.InlineKeyboardMarkup",
     "inline_keyboard" : [
       <#list categories as category>
       [

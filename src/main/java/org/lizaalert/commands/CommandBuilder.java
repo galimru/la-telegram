@@ -8,15 +8,16 @@ import java.lang.reflect.InvocationTargetException;
 
 public class CommandBuilder {
 
+    private String chatId;
     private SessionManager sessionManager;
     private String className;
 
     public CommandBuilder() {
     }
 
-    public CommandBuilder(SessionManager sessionManager, String className) {
-        this.sessionManager = sessionManager;
-        this.className = className;
+    public CommandBuilder setChatId(String chatId) {
+        this.chatId = chatId;
+        return this;
     }
 
     public CommandBuilder setSessionManager(SessionManager sessionManager) {
@@ -35,8 +36,8 @@ public class CommandBuilder {
         AbstractCommand command;
         try {
             command = (AbstractCommand) Class.forName(className)
-                    .getConstructor(SessionManager.class)
-                    .newInstance(new Object[]{sessionManager});
+                    .getConstructor(String.class, SessionManager.class)
+                    .newInstance(new Object[]{chatId, sessionManager});
         } catch (ClassNotFoundException
                 | InstantiationException
                 | NoSuchMethodException

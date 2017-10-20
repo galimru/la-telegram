@@ -17,9 +17,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public class ChooseSubscribeCommand extends AbstractCommand {
+public class SelectSubscribeCommand extends AbstractCommand {
 
-    public ChooseSubscribeCommand(String chatId, SessionManager sessionManager) {
+    public SelectSubscribeCommand(String chatId, SessionManager sessionManager) {
         super(chatId, sessionManager);
     }
 
@@ -38,7 +38,7 @@ public class ChooseSubscribeCommand extends AbstractCommand {
     }
 
     @Override
-    public boolean complete(Update update) {
+    public boolean onReceive(Update update) {
         SubscribeRepository subscribeRepository = ContextProvider.getBean(SubscribeRepository.class);
         Optional<String> callbackData = TelegramUtil.getCallbackData(update);
         if (callbackData.isPresent()) {

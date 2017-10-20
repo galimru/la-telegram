@@ -1,9 +1,11 @@
 package org.lizaalert.commands;
 
+import com.github.galimru.telegram.methods.AnswerCallbackQuery;
 import com.github.galimru.telegram.methods.EditMessageText;
 import com.github.galimru.telegram.methods.SendMessage;
 import com.github.galimru.telegram.objects.CallbackQuery;
 import com.github.galimru.telegram.objects.Message;
+import com.github.galimru.telegram.objects.ParseMode;
 import com.github.galimru.telegram.objects.Update;
 import com.github.galimru.telegram.util.TelegramUtil;
 import com.google.common.collect.ImmutableMap;
@@ -18,9 +20,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public class ChooseForumCommand extends AbstractCommand {
+public class SelectForumCommand extends AbstractCommand {
 
-    public ChooseForumCommand(String chatId, SessionManager sessionManager) {
+    public SelectForumCommand(String chatId, SessionManager sessionManager) {
         super(chatId, sessionManager);
     }
 
@@ -38,7 +40,7 @@ public class ChooseForumCommand extends AbstractCommand {
     }
 
     @Override
-    public boolean complete(Update update) {
+    public boolean onReceive(Update update) {
         ForumRepository forumRepository = ContextProvider.getBean(ForumRepository.class);
         Optional<String> callbackData = TelegramUtil.getCallbackData(update);
         if (callbackData.isPresent()) {
@@ -52,15 +54,16 @@ public class ChooseForumCommand extends AbstractCommand {
                         .ifPresent(id -> call(new EditMessageText()
                                 .setChatId(chatId)
                                 .setMessageId(id)
-                                .setText("Выбран подраздел: " + forum.getName()))
+                                .setParseMode(ParseMode.MARKDOWN)
+                                .setText("*Выбран регион:* " + forum.getName()))
                         );
                 return true;
             }
         }
-        call(fromTemplate("message", SendMessage.class, ImmutableMap.of(
-                "chat_id", chatId,
-                "text", "Подраздел с таким названием не найден"
-        )));
+        call(new AnswerCallbackQuery()
+                .setCallbackQueryId(update.getCallbackQuery().getId())
+                .setShowAlert(true)
+                .setText("Регион с таким названием не найден"));
         return false;
     }
 }

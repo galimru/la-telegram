@@ -1,10 +1,9 @@
 package org.lizaalert.entities;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
+import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "LA_USER", uniqueConstraints =
@@ -23,6 +22,9 @@ public class User extends AbstractEntity implements Serializable {
 
     @Column(name = "LAST_NAME")
     private String lastName;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    private List<Attribute> attributes = new ArrayList<>();
 
     public Integer getUserId() {
         return userId;
@@ -54,5 +56,13 @@ public class User extends AbstractEntity implements Serializable {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public List<Attribute> getAttributes() {
+        return attributes;
+    }
+
+    public void setAttributes(List<Attribute> attributes) {
+        this.attributes = attributes;
     }
 }

@@ -2,6 +2,7 @@ package org.lizaalert.commands;
 
 import com.github.galimru.telegram.methods.AbstractMethod;
 import com.github.galimru.telegram.objects.Update;
+import org.lizaalert.managers.AttributeManager;
 import org.lizaalert.managers.ContextProvider;
 import org.lizaalert.managers.SessionManager;
 import org.lizaalert.services.QueueService;
@@ -13,6 +14,7 @@ public abstract class AbstractCommand {
 
     protected String chatId;
     protected SessionManager sessionManager;
+    protected AttributeManager attributeManager;
     protected QueueService queueService;
     protected TemplateService templateService;
 
@@ -31,9 +33,17 @@ public abstract class AbstractCommand {
         this.sessionManager = sessionManager;
     }
 
+    public AttributeManager getAttributeManager() {
+        return attributeManager;
+    }
+
+    public void setAttributeManager(AttributeManager attributeManager) {
+        this.attributeManager = attributeManager;
+    }
+
     public abstract void execute(Update update);
 
-    public boolean complete(Update update) {
+    public boolean onReceive(Update update) {
         return true;
     }
 

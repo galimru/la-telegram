@@ -50,8 +50,9 @@ CREATE TABLE la_state
   updated_at timestamp without time zone,
   class_name character varying(255),
   name character varying(255),
-  CONSTRAINT la_state_pkey PRIMARY KEY (id),
-  CONSTRAINT fk_la_state_class_name UNIQUE (class_name)
+  one_time boolean,
+  transition boolean,
+  CONSTRAINT la_state_pkey PRIMARY KEY (id)
 );
 
 CREATE TABLE la_route
@@ -84,6 +85,21 @@ CREATE TABLE la_user
   CONSTRAINT fk_la_user_user_id UNIQUE (user_id)
 );
 
+CREATE TABLE la_attribute
+(
+  id uuid NOT NULL,
+  created_at timestamp without time zone,
+  updated_at timestamp without time zone,
+  key character varying(255),
+  value character varying(512),
+  user_id uuid,
+  CONSTRAINT la_attribute_pkey PRIMARY KEY (id),
+  CONSTRAINT fktb0pfhy77ta9edj3h98j5yvk0 FOREIGN KEY (user_id)
+      REFERENCES la_user (id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT la_attribute_param_key UNIQUE (user_id, key)
+);
+
 CREATE TABLE la_subscribe
 (
   id uuid NOT NULL,
@@ -107,6 +123,7 @@ CREATE TABLE la_session
   created_at timestamp without time zone,
   updated_at timestamp without time zone,
   chat_id character varying(255),
+  status character varying(255),
   state_id uuid,
   user_id uuid,
   CONSTRAINT la_session_pkey PRIMARY KEY (id),

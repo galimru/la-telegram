@@ -2,8 +2,9 @@ package org.lizaalert.managers;
 
 import org.lizaalert.entities.Session;
 import org.lizaalert.entities.SessionParam;
+import org.lizaalert.entities.State;
+import org.lizaalert.entities.Status;
 import org.lizaalert.repositories.SessionRepository;
-import org.lizaalert.services.SessionService;
 
 import java.util.HashSet;
 import java.util.Map;
@@ -29,10 +30,23 @@ public class SessionManager {
         return session;
     }
 
+    public void setState(State state, Status status) {
+        session.setState(state);
+        session.setStatus(status);
+    }
+
+    public Status getStatus() {
+        return session.getStatus();
+    }
+
     public void put(String key, String value) {
         params.put(key, value);
         forUpdate.add(key);
         forRemove.remove(key);
+    }
+
+    public void put(String key, Object value) {
+        put(key, value != null ? value.toString() : null);
     }
 
     public String get(String key) {
@@ -47,6 +61,7 @@ public class SessionManager {
     }
 
     public void clear() {
+        params.clear();
         forUpdate.clear();
         forRemove.addAll(session.getParams().stream()
                 .map(SessionParam::getKey)

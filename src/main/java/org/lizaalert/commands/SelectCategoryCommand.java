@@ -3,21 +3,21 @@ package org.lizaalert.commands;
 import com.github.galimru.telegram.methods.AnswerCallbackQuery;
 import com.github.galimru.telegram.methods.EditMessageText;
 import com.github.galimru.telegram.methods.SendMessage;
-import com.github.galimru.telegram.objects.CallbackQuery;
-import com.github.galimru.telegram.objects.Message;
-import com.github.galimru.telegram.objects.Update;
+import com.github.galimru.telegram.objects.*;
 import com.github.galimru.telegram.util.TelegramUtil;
 import com.google.common.collect.ImmutableMap;
-import org.lizaalert.entities.*;
+import org.lizaalert.entities.Category;
 import org.lizaalert.managers.ContextProvider;
 import org.lizaalert.managers.SessionManager;
 import org.lizaalert.repositories.CategoryRepository;
 
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
-public class ChooseCategoryCommand extends AbstractCommand {
+public class SelectCategoryCommand extends AbstractCommand {
 
-    public ChooseCategoryCommand(String chatId, SessionManager sessionManager) {
+    public SelectCategoryCommand(String chatId, SessionManager sessionManager) {
         super(chatId, sessionManager);
     }
 
@@ -25,10 +25,12 @@ public class ChooseCategoryCommand extends AbstractCommand {
     public void execute(Update update) {
         CategoryRepository categoryRepository = ContextProvider.getBean(CategoryRepository.class);
         List<Category> categories = categoryRepository.findAll();
-        call(fromTemplate("message-with-home", SendMessage.class, ImmutableMap.of(
-                "chat_id", chatId,
-                "text", "После оформления подписки вы будете получать уведомления о новых темах поиска на форуме"
-        )));
+        call(new SendMessage().setChatId(chatId)
+                .setText("Выбор региона")
+                .setReplyMarkup(new ReplyKeyboardMarkup()
+                        .setResizeKeyboard(true).setKeyboard(new KeyboardButton[][] {
+                                new KeyboardButton[]{new KeyboardButton().setText("В начало")}
+                        })));
         call(fromTemplate("category-list", SendMessage.class, ImmutableMap.of(
                 "chat_id", chatId,
                 "categories", categories
@@ -36,7 +38,7 @@ public class ChooseCategoryCommand extends AbstractCommand {
     }
 
     @Override
-    public boolean complete(Update update) {
+    public boolean onReceive(Update update) {
         CategoryRepository categoryRepository = ContextProvider.getBean(CategoryRepository.class);
         Optional<String> callbackData = TelegramUtil.getCallbackData(update);
         if (callbackData.isPresent()) {
@@ -50,14 +52,15 @@ public class ChooseCategoryCommand extends AbstractCommand {
                         .ifPresent(id -> call(new EditMessageText()
                                 .setChatId(chatId)
                                 .setMessageId(id)
-                                .setText("Выбран раздел: " + category.getName()))
+                                .setParseMode(ParseMode.MARKDOWN)
+                                .setText("*Выбран округ:* " + category.getName()))
                         );
                 return true;
             }
             call(new AnswerCallbackQuery()
                     .setCallbackQueryId(update.getCallbackQuery().getId())
                     .setShowAlert(true)
-                    .setText("Раздел с таким названием не найден"));
+                    .setText("Округ с таким названием не найден"));
         }
         return false;
     }

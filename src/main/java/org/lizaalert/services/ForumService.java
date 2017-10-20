@@ -49,7 +49,10 @@ public class ForumService {
 
         for(Forum forum : forums) {
             rateLimiter.acquire();
-            update(forum);
+            // TODO only for testing
+            if (forum.getForumId() == 190) {
+                update(forum);
+            }
         }
     }
 

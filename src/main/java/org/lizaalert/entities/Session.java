@@ -19,6 +19,10 @@ public class Session extends AbstractEntity implements Serializable {
     @JoinColumn(name = "STATE_ID")
     private State state;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "STATUS")
+    private Status status;
+
     @Column(name = "CHAT_ID")
     private String chatId;
 
@@ -40,6 +44,14 @@ public class Session extends AbstractEntity implements Serializable {
 
     public void setState(State state) {
         this.state = state;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 
     public String getChatId() {

@@ -15,7 +15,7 @@ public class TelegramService {
 
     private final Log log = LogFactory.getLog(TelegramService.class);
 
-    private static final double REQUESTS_PER_SECOND = 30;
+    private static final double REQUESTS_PER_SECOND = 10;
 
     @Value("${org.lizaalert.telegram.token}")
     private String telegramToken;
